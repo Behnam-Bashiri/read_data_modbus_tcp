@@ -11,7 +11,9 @@ class API:
         try:
             client = ModbusTcpClient(self.ipaddress, port=502)
             client.connect()
-            result = client.read_input_registers(address=self.ipaddress)
+            result = client.read_holding_registers(address=20,count=1,unit=1)
+            response = client.execute(result)
+            print(result.registers[0])
             client.close()
         except Exception as er:
             print("ERROR: Reading Modbus registers at getDeviceStatus:")
