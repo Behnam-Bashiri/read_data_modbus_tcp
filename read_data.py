@@ -11,10 +11,14 @@ class API:
         try:
             client = ModbusTcpClient(self.ipaddress, port=502)
             client.connect()
-            result = client.read_holding_registers(address=20,count=1,unit=1)
+            f = open("res.txt", "a")
+            # for i in range(40069, 40090):
+            result = client.read_holding_registers(address=40069, count=100, unit=1)
             response = client.execute(result)
-            print(result.registers[0])
+            for i in range(0,100):
+                f.write('{}\n'.format(result.registers[i]))
             client.close()
+            f.close()
         except Exception as er:
             print("ERROR: Reading Modbus registers at getDeviceStatus:")
             print(er)
@@ -22,7 +26,7 @@ class API:
 
 
 def main():
-    Prolon = API(ipaddress='192.168.1.55', port='502')
+    Prolon = API(ipaddress='192.168.100.114', port='502')
 
     Prolon.getDeviceStatus()
 
